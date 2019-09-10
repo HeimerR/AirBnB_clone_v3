@@ -70,12 +70,14 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
+        """ return th object based on cls and id """
         self.reload()
         key = cls + '.' + id
         obj = self.__objects[key]
         return obj
 
     def count(self, cls=None):
+        """ coounts the number of objects based on cls """
         self.reload()
         obj_dict = self.all(cls)
         return len(obj_dict)
