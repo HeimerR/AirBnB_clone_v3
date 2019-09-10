@@ -73,7 +73,7 @@ class FileStorage:
         """ return th object based on cls and id """
         self.reload()
         key = cls + '.' + id
-        obj = self.__objects[key]
+        obj = self.__objects.get(key)
         return obj
 
     def count(self, cls=None):
