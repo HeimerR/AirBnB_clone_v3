@@ -33,7 +33,7 @@ def state_delete_put(id=None):
         storage.save()
         return (jsonify({}), 200)
     if request.method == 'PUT':
-        if not request.json:
+        if not request.is_json:
             abort(400, "Not a JSON")
         to_update = request.get_json()
         for key, value in to_update.items():
@@ -47,7 +47,7 @@ def state_delete_put(id=None):
 @app_views.route('/states', methods=['POST'])
 def state_post():
     """ post method """
-    if not request.json:
+    if not request.is_json:
         abort(400, "Not a JSON")
     if 'name' not in request.json:
         abort(400, "Missing name")
