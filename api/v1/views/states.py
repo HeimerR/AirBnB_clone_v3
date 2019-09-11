@@ -20,18 +20,31 @@ def state(id=None):
     return jsonify(states)
 
 
-@app_views.route('/states/<id>', methods=['DELETE'])
+@app_views.route('/states/<id>', methods=['DELETE', 'PUT'])
 def state_delete(id=None):
     state = storage.get("State", id)
     if state is None:
         abort(404)
-    else:
+    if request.method == 'DELETE':
         state.delete()
         storage.save()
         return (jsonify({}), 200)
+    if request.method == 'PUT':
+        if not request.json:
+            abort(400, "Not a JSON")
+        to_update = request.get_json()
+        for key, value in to_update.items():
+            if key is not "id" and key is not "created_at" and key is not "updated_at":
+                state.__dict__[key] = value
+        state.save()
+        return (jsonify(state.to_dict()), 200)
 
 @app_views.route('/states', methods=['POST'])
 def state_post():
+    if not request.json:
+        abort(400, "Not a JSON")
+    if not 'name' in request.json:
+        abort(400, "Missing name")
     new = request.get_json()
     new_obj = State(**new)
     storage.new(new_obj)
