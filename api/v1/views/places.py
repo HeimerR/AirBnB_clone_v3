@@ -31,7 +31,7 @@ def city_place(city_id=None):
 
 @app_views.route('places/<place_id>', methods=['DELETE', 'PUT'])
 def place_delete(place_id=None):
-    """ DELETE and PUT place methods"""
+    """ DELETE and PUT place methods """
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
@@ -54,7 +54,7 @@ def place_delete(place_id=None):
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'])
 def place_post(city_id):
-    """POST method to create a place"""
+    """ POST method to create a place """
     city = storage.get("City", city_id)
     if city is None:
         abort(404)
