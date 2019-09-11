@@ -46,6 +46,7 @@ def amenity_delete_update(amenity_id=None):
 
 @app_views.route('/amenities', methods=['POST'])
 def amenity_post():
+    """ POST amenity """
     if not request.is_json:
         abort(400, "Not a JSON")
     if 'name' not in request.json:
