@@ -45,8 +45,8 @@ def place_delete(place_id=None):
         to_update = request.get_json()
         for key, value in to_update.items():
             if (key is not "id" and key is not "created_at" and
-                    key is not "updated_at" and key is not "user_id"
-                    and key is not "city_id"):
+                    key is not "updated_at" and key is not "user_id" and
+                    key is not "city_id"):
                 setattr(place, key, value)
         place.save()
         return (jsonify(place.to_dict()), 200)
