@@ -40,7 +40,7 @@ def state_delete_put(id=None):
         for key, value in to_update.items():
             if (key is not "id" and key is not "created_at" and
                key is not "updated_at"):
-                state.__dict__[key] = value
+                setattr(state, key, value)
         state.save()
         return (jsonify(state.to_dict()), 200)
 
