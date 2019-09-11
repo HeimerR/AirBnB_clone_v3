@@ -69,7 +69,7 @@ def review_post(place_id):
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
-    new_obj = Place(**new)
+    new_obj = Review(**new)
     setattr(new_obj, "place_id", place_id)
     storage.new(new_obj)
     storage.save()
