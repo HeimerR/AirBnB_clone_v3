@@ -23,7 +23,7 @@ def users(user_id=None):
 
 
 @app_views.route('users/<user_id>', methods=['DELETE', 'PUT'])
-def user_delete_update(amenity_id=None):
+def user_delete_update(user_id=None):
     """ DELETE PUT user"""
     user = storage.get("User", user_id)
     if user is None:
