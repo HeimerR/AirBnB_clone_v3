@@ -22,7 +22,7 @@ def amenities(amenity_id=None):
     return jsonify(amenities)
 
 
-@app_views.route('/api/v1/amenities/<amenity_id>', methods=['DELETE', 'PUT'])
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE', 'PUT'])
 def amenity_delete_update(amenity_id=None):
     """ DELETE PUT amenity"""
     amenity = storage.get("Amenity", amenity_id)
