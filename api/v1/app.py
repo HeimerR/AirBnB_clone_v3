@@ -28,4 +28,5 @@ def error(e):
 
 
 if __name__ == '__main__':
+    """ starts api """
     app.run(host=host, port=port, threaded=True)
