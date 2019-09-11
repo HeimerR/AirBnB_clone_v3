@@ -19,7 +19,7 @@ def close(cls):
 
 @app.errorhandler(404)
 def error(e):
-    return jsonify({"error": "Not found"})
+    return (jsonify({"error": "Not found"}),  404)
 
 
 if __name__ == '__main__':

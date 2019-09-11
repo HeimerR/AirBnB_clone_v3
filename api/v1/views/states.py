@@ -6,7 +6,7 @@ from models import storage
 @app_views.route('/states/<id>')
 @app_views.route('/states')
 def state(id=None):
-    states=[]
+    states = []
     if id:
         state = storage.get("State", id)
         if state is None:
@@ -19,12 +19,12 @@ def state(id=None):
     return jsonify(states)
 
 
-
 @app_views.route('/states/<id>', methods=['DELETE'])
 def state_delete(id=None):
     state = storage.get("State", id)
     if state is None:
-        abort(404, description="Resource not found")
+        abort(404)
     else:
         state.delete()
-        return jsonify({}, 200)
+        storage.save()
+        return (jsonify({}), 200)
