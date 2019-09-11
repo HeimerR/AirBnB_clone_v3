@@ -1,6 +1,7 @@
 from api.v1.views import app_views
-from flask import jsonify, abort
+from flask import jsonify, abort, request
 from models import storage
+from models.state import State
 
 
 @app_views.route('/states/<id>')
@@ -28,3 +29,11 @@ def state_delete(id=None):
         state.delete()
         storage.save()
         return (jsonify({}), 200)
+
+@app_views.route('/states', methods=['POST'])
+def state_post():
+    new = request.get_json()
+    new_obj = State(**new)
+    storage.new(new_obj)
+    storage.save()
+    return (jsonify(new_obj.to_dict()), 201)
