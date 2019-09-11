@@ -29,15 +29,27 @@ def state_city(id=None, state_id=None):
         return jsonify(cities)
 
 
-@app_views.route('/cities/<city_id>', methods=['DELETE'])
+@app_views.route('/cities/<city_id>', methods=['DELETE', 'PUT'])
 def city_delete(city_id=None):
     """ DELETE City"""
     city = storage.get("City", city_id)
     if city is None:
         abort(404)
-    city.delete()
-    storage.save()
-    return (jsonify({}), 200)
+    if request.method == 'DELETE':
+        city.delete()
+        storage.save()
+        return (jsonify({}), 200)
+    if request.method == 'PUT':
+        if not request.is_json:
+            abort(400, "Not a JSON")
+        to_update = request.get_json()
+        for key, value in to_update.items():
+            if (key is not "id" and key is not "created_at" and
+                    key is not "updated_at" and key is not "state_id"):
+                setattr(city, key, value)
+        city.save()
+        return (jsonify(city.to_dict()), 200)
+
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def city_post(state_id):
