@@ -10,6 +10,7 @@ import os
 
 host = os.environ.get('HBNB_API_HOST', '0.0.0.0')
 port = os.environ.get('HBNB_API_PORT', '5000')
+db = os.environ.get('HBNB_TYPE_STORAGE', 'jsonfile')
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 app.url_map.strict_slashes = False

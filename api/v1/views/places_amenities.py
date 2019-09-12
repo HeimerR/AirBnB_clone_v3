@@ -7,9 +7,7 @@ from models.place import Place
 from models.amenity import Amenity
 import os
 import sqlalchemy
-
-
-db = os.environ.get('HBNB_TYPE_STORAGE', None)
+from api.v1.app import db
 
 
 @app_views.route('/places/<place_id>/amenities')
@@ -20,12 +18,12 @@ def amenities_from_place(place_id=None):
     if place is None:
         abort(404)
     else:
-        if db is 'db':
+        if db == 'db':
             for amenity in place.amenities:
                 amenities.append(amenity.to_dict())
             return jsonify(amenities)
         else:
-            jsonnify(place.amenities())
+            jsonify(place.amenities())
 
 
 @app_views.route(
@@ -37,25 +35,30 @@ def amenity_review_delete(place_id=None, amenity_id=None):
     amenity = storage.get("Amenity", amenity_id)
     if amenity is None or place is None:
         abort(404)
-    if amenity.id not in place.amenities.id:
+    list = [item.id for item in place.amenities]
+    if amenity.id not in list:
         abort(404)
 
-    if db is 'db':
+    if db == 'db':
         place.amenities.remove(amenity)
-        return (jsonify({}), 200)
     else:
         place.amenities().remove(amenity.id)
+    place.save()
+    return (jsonify({}), 200)
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['POST'])
-def amenity_from_place_post(place_id):
+def amenity_from_place_post(place_id, amenity_id):
     """ POST method to create a amenity """
     place = storage.get("Place", place_id)
     amenity = storage.get("Amenity", amenity_id)
     if amenity is None or place is None:
         abort(404)
-    if amenity.id in place.amenities.id:
+    list = [item.id for item in place.amenities]
+    if amenity.id in list:
         return (jsonify(amenity.to_dict()), 200)
     if db is 'db':
         place.amenities.append(amenity)
-        return (jsonify(amenity.to_dict()), 201)
+    else:
+        place.amenities.append(amenity.id)
+    return (jsonify(amenity.to_dict()), 201)
