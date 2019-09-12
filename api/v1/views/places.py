@@ -74,3 +74,49 @@ def place_post(city_id):
     storage.new(new_obj)
     storage.save()
     return (jsonify(new_obj.to_dict()), 201)
+
+
+@app_views.route('/places_search')
+def place_search():
+    """ POST method to search a place bases in json body"""
+    if not request.is_json:
+        abort(400, "Not a JSON")
+    parms = request.get_json()
+    vals = [len(item) for item in parms.values()]
+    if ((len(parms) is 0) or (max(vals) is 0)):
+        places = storage.all("Place").values()
+        return jsonify([item.to_dict() for item in places])
+    places = []
+    if 'states' in parms and len(parms.get('states')) > 0:
+        states = parms.get('states')
+        states_obj = [storage.get('State', state) for state in states]
+        for state_obj in states_obj:
+            state_cities = state_obj.cities
+            for city in state_cities:
+                city_places = city.places
+                for place in city_places:
+                    places.append(place.to_dict())
+    if 'cities' in parms and len(parms.get('cities')) > 0:
+        cities = parms.get('cities')
+        cities_obj = [storage.get('City', city) for city in cities]
+        for city in cities_obj:
+                city_places = city.places
+                for place in city_places:
+                    places.append(place.to_dict())
+    if 'amenities' in parms and len(parms.get('amenities')) > 0:
+        amenities = parms.get('amenities')
+        amenities_obj = [storage.get('Amenity', amenity) for amenity in amenities]
+        places_obj = storage.all('Place').values()
+        for place in places_obj:
+            amenity_place = []
+            amenities2 = place.amenities
+            for amenity2 in amenities2:
+                amenity_place.append(amenity2.id)
+            for amenity in amenities:
+                if amenity in amenity_place:
+                    flag = True
+                else:
+                    flag = False
+    return jsonify(places)
+
+
