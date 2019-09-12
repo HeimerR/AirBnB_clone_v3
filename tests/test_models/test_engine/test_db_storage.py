@@ -72,7 +72,7 @@ test_db_storage.py'])
         state = State(name='cundi')
         models.storage.new(state)
         models.storage.save()
-        self.assertEqual(models.storage.get("State", state.id), state)
+        self.assertEqual(models.storage.get("State", state.id).id, state.id)
 
     def test_count_func(self):
         """ test count fuction """
