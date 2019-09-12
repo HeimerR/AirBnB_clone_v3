@@ -40,6 +40,5 @@ class User(BaseModel, Base):
 
     @password.setter
     def password(self, pas):
-        print("El password es: {}".format(pas))
         passwmd5 = hashlib.md5(pas.encode())
         self.password_hash = passwmd5.hexdigest()
