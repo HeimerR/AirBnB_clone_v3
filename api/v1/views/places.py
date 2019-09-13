@@ -100,12 +100,13 @@ def place_search():
         cities = parms.get('cities')
         cities_obj = [storage.get('City', city) for city in cities]
         for city in cities_obj:
-                city_places = city.places
-                for place in city_places:
-                    places.append(place.to_dict())
+            city_places = city.places
+            for place in city_places:
+                places.append(place.to_dict())
     if 'amenities' in parms and len(parms.get('amenities')) > 0:
         amenities = parms.get('amenities')
-        amenities_obj = [storage.get('Amenity', amenity) for amenity in amenities]
+        amenities_obj = [storage.get('Amenity', amenity)
+                         for amenity in amenities]
         places_obj = storage.all('Place').values()
         for place in places_obj:
             amenity_place = []
@@ -117,6 +118,9 @@ def place_search():
                     flag = True
                 else:
                     flag = False
+                    break
+            if flag is True:
+                place2 = place.to_dict()
+                del place2['amenities']
+                places.append(place2)
     return jsonify(places)
-
-
