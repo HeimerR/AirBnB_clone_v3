@@ -76,7 +76,7 @@ def place_post(city_id):
     return (jsonify(new_obj.to_dict()), 201)
 
 
-@app_views.route('/places_search')
+@app_views.route('/places_search', methods=['POST'])
 def place_search():
     """ POST method to search a place bases in json body"""
     if not request.is_json:
