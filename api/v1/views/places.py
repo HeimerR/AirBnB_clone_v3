@@ -87,6 +87,7 @@ def place_search():
         places = storage.all("Place").values()
         return jsonify([item.to_dict() for item in places])
     places = []
+    places_ids = []
     if 'states' in parms and len(parms.get('states')) > 0:
         states = parms.get('states')
         states_obj = [storage.get('State', state) for state in states]
@@ -123,4 +124,5 @@ def place_search():
                 place2 = place.to_dict()
                 del place2['amenities']
                 places.append(place2)
+    places = [i for n, i in enumerate(places) if i not in places[n + 1:]]
     return jsonify(places)
