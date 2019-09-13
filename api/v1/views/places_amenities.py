@@ -7,7 +7,9 @@ from models.place import Place
 from models.amenity import Amenity
 import os
 import sqlalchemy
-from api.v1.app import db
+
+
+db = os.environ.get('HBNB_TYPE_STORAGE', 'jsonfile')
 
 
 @app_views.route('/places/<place_id>/amenities')
