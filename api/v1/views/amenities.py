@@ -9,7 +9,20 @@ from models.amenity import Amenity
 @app_views.route('/amenities')
 @app_views.route('/amenities/<amenity_id>')
 def amenities(amenity_id=None):
-    """ GET Amenity """
+    """ Show Amenity
+    ---
+    tags:
+        - Amenity
+    parameters:
+      - name: amenity_id
+        in: path
+        type: string
+    responses:
+      200:
+        description: List of amenities
+      404:
+        description: Resource not found
+    """
     amenities = []
     if amenity_id:
         amenity = storage.get("Amenity", amenity_id)
@@ -24,7 +37,23 @@ def amenities(amenity_id=None):
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE', 'PUT'])
 def amenity_delete_update(amenity_id=None):
-    """ DELETE PUT amenity"""
+    """ Update  amenity
+    ---
+    tags:
+        - Amenity
+    parameters:
+      - name: amenity_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Amenity updated!
+      404:
+        description: Resource not found
+      400:
+        description: Not a JSON
+    """
     amenity = storage.get("Amenity", amenity_id)
     if amenity is None:
         abort(404)
@@ -46,7 +75,16 @@ def amenity_delete_update(amenity_id=None):
 
 @app_views.route('/amenities', methods=['POST'])
 def amenity_post():
-    """ POST amenity """
+    """ Create amenity
+    ---
+    tags:
+        - Amenity
+    responses:
+      201:
+        description: Amenity created
+      400:
+        description: Not a JSON or missing name
+    """
     if not request.is_json:
         abort(400, "Not a JSON")
     if 'name' not in request.json:
