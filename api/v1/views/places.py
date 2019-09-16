@@ -8,7 +8,21 @@ from models.place import Place
 
 @app_views.route('/places/<place_id>')
 def places(place_id=None):
-    """ GET place """
+    """ Show place by id
+    ---
+    tags:
+        - Places
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Show place
+      404:
+        description: Resource not found
+    """
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
@@ -18,7 +32,21 @@ def places(place_id=None):
 
 @app_views.route('/cities/<city_id>/places')
 def city_place(city_id=None):
-    """ basic GET places by city method """
+    """ Show places by city
+    ---
+    tags:
+        - Places
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Show places
+      404:
+        description: City not found
+    """
     places = []
     city = storage.get("City", city_id)
     if city is None:
@@ -31,7 +59,21 @@ def city_place(city_id=None):
 
 @app_views.route('places/<place_id>', methods=['DELETE', 'PUT'])
 def place_delete(place_id=None):
-    """ DELETE and PUT place methods """
+    """ Update place
+    ---
+    tags:
+        - Places
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Place updated
+      404:
+        description: Place not found
+    """
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
@@ -54,7 +96,23 @@ def place_delete(place_id=None):
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'])
 def place_post(city_id):
-    """ POST method to create a place """
+    """ Create place on city
+    ---
+    tags:
+        - Places
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+    responses:
+      201:
+        description: Place created!
+      404:
+        description: city not found
+      400:
+        description: Not a json and/or missing user_id and/or missing name
+    """
     city = storage.get("City", city_id)
     if city is None:
         abort(404)
