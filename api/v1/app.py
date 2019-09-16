@@ -16,6 +16,24 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
+app.config['SWAGGER'] = {
+    "swagger_version": "2.0",
+    "title": "Flasgger",
+    "headers": [
+        ('Access-Control-Allow-Origin', '*'),
+        ('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS"),
+        ('Access-Control-Allow-Credentials', "true"),
+    ],
+    "specs": [
+        {
+            "version": "1.0",
+            "title": "HBNB API",
+            "endpoint": 'v1_views',
+            "description": 'RESTFul API for HBNB',
+            "route": '/v1/views',
+        }
+    ]
+}
 swagger = Swagger(app)
 
 
