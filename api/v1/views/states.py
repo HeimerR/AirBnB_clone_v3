@@ -38,7 +38,23 @@ def state(id=None):
 
 @app_views.route('/states/<id>', methods=['DELETE', 'PUT'])
 def state_delete_put(id=None):
-    """ delete and put methods """
+    """ Updating a State
+    ---
+    tags:
+        - States
+    parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: State updated
+      404:
+        description: Resource not found
+      400:
+        description: Not a JSON
+    """
     state = storage.get("State", id)
     if state is None:
         abort(404)
@@ -60,7 +76,18 @@ def state_delete_put(id=None):
 
 @app_views.route('/states', methods=['POST'])
 def state_post():
-    """ post method """
+    """ Creating new State
+    ---
+    tags:
+        - States
+    responses:
+      201:
+        description: State updated
+        examples:
+          state: {"name": "Santander"}
+      404:
+        description: Not a Json or missing name
+    """
     if not request.is_json:
         abort(400, "Not a JSON")
     if 'name' not in request.json:
