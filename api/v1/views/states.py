@@ -9,7 +9,20 @@ from models.state import State
 @app_views.route('/states/<id>')
 @app_views.route('/states')
 def state(id=None):
-    """ basic get states method """
+    """Show states
+    ---
+    tags:
+        - States
+    parameters:
+      - name: id
+        in: path
+        type: string
+    responses:
+      200:
+        description: List of states
+      404:
+        description: Resource not found
+     """
     states = []
     if id:
         state = storage.get("State", id)
