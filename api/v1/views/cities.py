@@ -8,7 +8,21 @@ from models.city import City
 
 @app_views.route('/cities/<id>')
 def cities(id=None):
-    """ GET City """
+    """ Show City
+    ---
+    tags:
+        - City
+    parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+    responses:
+        200:
+            description: City
+        404:
+            description: Resource not found
+    """
     city = storage.get("City", id)
     if city is None:
         abort(404)
@@ -18,7 +32,21 @@ def cities(id=None):
 
 @app_views.route('/states/<state_id>/cities')
 def state_city(id=None, state_id=None):
-    """ basic GET cities method """
+    """ List of cities by state
+    ---
+    tags:
+        - City
+    parameters:
+      - name: state_id
+        in: path
+        type: string
+        required: true
+    responses:
+        200:
+            description: List of cities
+        404:
+            description: Resource not found
+    """
     cities = []
     state = storage.get("State", state_id)
     if state is None:
@@ -31,7 +59,23 @@ def state_city(id=None, state_id=None):
 
 @app_views.route('/cities/<city_id>', methods=['DELETE', 'PUT'])
 def city_delete(city_id=None):
-    """ DELETE City"""
+    """ Update City
+    ---
+    tags:
+        - City
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+    responses:
+        200:
+            description: City updated!
+        404:
+            description: Resource not found
+        400:
+            description: Not a JSON
+    """
     city = storage.get("City", city_id)
     if city is None:
         abort(404)
@@ -53,6 +97,23 @@ def city_delete(city_id=None):
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def city_post(state_id):
+    """ Create new City
+    ---
+    tags:
+        - City
+    parameters:
+      - name: state_id
+        in: path
+        type: string
+        required: true
+    responses:
+        201:
+            description: City created!
+        404:
+            description: State not found
+        400:
+            description: Not a JSON or missing name
+    """
     state = storage.get("State", state_id)
     if state is None:
         abort(404)
