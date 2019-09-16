@@ -8,7 +8,21 @@ from models.review import Review
 
 @app_views.route('/reviews/<review_id>')
 def reviews(review_id=None):
-    """ GET place """
+    """ Show review
+    ---
+    tags:
+        - Review
+    parameters:
+      - name: review_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Show review
+      404:
+        description: Resource not found
+    """
     review = storage.get("Review", review_id)
     if review is None:
         abort(404)
@@ -18,7 +32,21 @@ def reviews(review_id=None):
 
 @app_views.route('/places/<place_id>/reviews')
 def review_place(place_id=None):
-    """ basic GET reviews by place method """
+    """ Show reviews by place
+    ---
+    tags:
+        - Review
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Show reviews
+      404:
+        description: Resource not found
+    """
     reviews = []
     place = storage.get("Place", place_id)
     if place is None:
@@ -31,7 +59,23 @@ def review_place(place_id=None):
 
 @app_views.route('/reviews/<review_id>', methods=['DELETE', 'PUT'])
 def review_delete(review_id=None):
-    """ DELETE and PUT review methods """
+    """ Update review
+    ---
+    tags:
+        - Review
+    parameters:
+      - name: review_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Review updated
+      404:
+        description: Resource not found
+      400:
+        description: Not a JSON
+    """
     review = storage.get("Review", review_id)
     if review is None:
         abort(404)
@@ -54,7 +98,23 @@ def review_delete(review_id=None):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'])
 def review_post(place_id):
-    """ POST method to create a place """
+    """ Create a reate in place
+    ---
+    tags:
+        - Review
+    parameters:
+      - name: place_id
+        in: path
+        type: string
+        required: true
+    responses:
+      201:
+        description: Review created!
+      404:
+        description: Resource not found
+      400:
+        description: Not a JSON or/and missing text or/and missing user_id
+    """
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
