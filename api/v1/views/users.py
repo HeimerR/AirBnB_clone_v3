@@ -9,7 +9,20 @@ from models.user import User
 @app_views.route('/users')
 @app_views.route('/users/<user_id>')
 def users(user_id=None):
-    """ GET User """
+    """ Show User
+    ---
+    tags:
+        - User
+    parameters:
+      - name: user_id
+        in: path
+        type: string
+    responses:
+      200:
+        description: List of users
+      404:
+        description: Resource not found
+    """
     users = []
     if user_id:
         user = storage.get("User", user_id)
@@ -24,7 +37,23 @@ def users(user_id=None):
 
 @app_views.route('users/<user_id>', methods=['DELETE', 'PUT'])
 def user_delete_update(user_id=None):
-    """ DELETE PUT user"""
+    """ Update user
+    ---
+    tags:
+        - User
+    parameters:
+      - name: user_id
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: User updated
+      404:
+        description: Resource not found
+      400:
+        description: Not a JSON
+    """
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
@@ -46,7 +75,16 @@ def user_delete_update(user_id=None):
 
 @app_views.route('/users', methods=['POST'])
 def user_post():
-    """ POST user """
+    """ Create user
+    ---
+    tags:
+        - User
+    responses:
+      201:
+        description: User created
+      400:
+        description: Missing password or/and email
+    """
     if not request.is_json:
         abort(400, "Not a JSON")
     if 'email' not in request.json:
